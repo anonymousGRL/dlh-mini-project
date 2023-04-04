@@ -601,20 +601,29 @@ class dice_loss(nn.Module):
 
 """### Single Training Run with qualitative test set visualization."""
 
+# Define model under investigation
 net = UGNNet(out_channels = 2).to(device)
+
+# Print number of trainable parameters
 params = sum(p.numel() for p in net.parameters())
 print('Trainable params: ', params)
+
+# Generate dataset 
 data = augmented_numpy_dataset(X_total_c,y_total)
 print(len(data))
+
+# Randomly split dataset into Training, Validation and Test
 split = torch.utils.data.random_split(data, [0.8, 0.1, 0.1], generator=torch.Generator())
 
 train_loader = DataLoader(split[0], batch_size=16, shuffle=True)
 val_loader = DataLoader(split[1], batch_size=16, shuffle=True)
 test_loader = DataLoader(split[2], batch_size=16, shuffle=True, drop_last=True)
 
+# Define Loss and Optimizer
 class_loss = dice_loss()
 optim = torch.optim.Adam(net.parameters(), lr= 0.0001)
 
+# Train
 losses = []
 max_epochs = 25
 
@@ -625,6 +634,7 @@ losses = np.array(losses).T
 print(losses.shape)
 its = np.linspace(1, len(losses[0]), len(losses[0]))
 
+# Visualize training process
 plt.figure()
 plt.plot(its, losses[0,:])
 plt.plot(its, losses[1,:])

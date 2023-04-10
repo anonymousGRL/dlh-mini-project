@@ -660,7 +660,7 @@ axarr[2].imshow(1 - target[10][0][:][2].cpu().squeeze())
 """## Cross Validation"""
 
 def cross_validate(model, num_splits=5, batch_size=16, epochs=20):
-    """Use k-fold cross validation to evaluate a model on a dataset."""
+    """Use (monte carlo) cross validation to evaluate a model on a dataset."""
 
     # Define Optimizer and Loss
     class_loss = dice_loss()
